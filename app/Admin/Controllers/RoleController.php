@@ -76,6 +76,7 @@ class RoleController extends Controller
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
 			$grid->head('头像')->image(50,50);
+			//$url = $grid->head();
 			$grid->tel('手机号码');
 			$grid->sex('性别');
 			$grid->role('角色');
@@ -89,9 +90,11 @@ class RoleController extends Controller
 			$grid->disableCreation();
 			$grid->actions(function ($actions) {
 
+					$actions->row;
+					$actions->getKey();
 				    // append一个操作
 				   $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
-				
+					//$actions->append("<video src='$url'>预览</video>");
 				             });
 
 			$grid->filter(function($filter){
