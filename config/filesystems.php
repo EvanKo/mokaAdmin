@@ -49,7 +49,7 @@ return [
 		],
 		'admin' => [
             'driver' => 'local',
-            'root' => 'upload',
+            'root' => public_path('upload'),
         ],
 
 

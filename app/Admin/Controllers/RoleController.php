@@ -42,7 +42,7 @@ class RoleController extends Controller
         return Admin::content(function (Content $content) use ($id) {
 
             $content->header('用户');
-            $content->description('摩卡');
+            $content->description('');
 
             $content->body($this->form()->edit($id));
         });
@@ -79,11 +79,18 @@ class RoleController extends Controller
 			//$url = $grid->head();
 			$grid->tel('手机号码');
 			$grid->sex('性别');
-			$grid->role('角色');
+			$grid->role('角色')->display(function($role){
+				if($role=='1') return '模特';
+				if($role=='2') return '摄影师';
+				if($role=='3') return '经纪人';
+				if($role=='4') return '公司';
+			});
 			$grid->provice('省份');
 			$grid->city('城市');
 			$grid->area('地区');
-			$grid->v('会员等级');
+			$grid->v('会员等级')->display(function($c){
+				return $c?'高级会员':'普通会员';
+			});
             $grid->created_at();
             $grid->updated_at();
 			//禁用创建
@@ -91,7 +98,7 @@ class RoleController extends Controller
 			$grid->actions(function ($actions) {
 
 					$actions->row;
-					$actions->getKey();
+					$actions->disableEdit();
 				    // append一个操作
 				   $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
 					//$actions->append("<video src='$url'>预览</video>");
@@ -117,7 +124,8 @@ class RoleController extends Controller
         return Admin::form(Role::class, function (Form $form) {
 
             $form->display('id', 'ID');
-
+			$form->text('moka');
+			$form->image('head');
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });

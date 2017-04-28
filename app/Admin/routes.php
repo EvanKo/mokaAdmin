@@ -14,4 +14,5 @@ Route::group([
 	$router->resource('moka', MokaController::class);
 	$router->resource('role',RoleController::class);
 	$router->resource('user', UserController::class);
+	$router->resource('PayRecord', PayRecordController::class);
 });
