@@ -15,4 +15,8 @@ class Fan extends Model
       ,'idolhead'
       ,'idolsex'
       ,'idolname');
+	  public function Role()
+	  {
+		  return $this->belongsTo(Role::class,'idol');
+	  }
 }

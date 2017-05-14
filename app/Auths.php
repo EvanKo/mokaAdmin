@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Moka extends Model
+class Auths extends Model
 {
-	protected $table = 'Mokas';	
+	protected $table = 'Auths';
+	protected $guarded = [];
 
 	public function Role()
 	{

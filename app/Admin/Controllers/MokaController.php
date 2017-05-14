@@ -24,8 +24,8 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('用户');
-            $content->description('摩卡用户群');
+            $content->header('摩卡');
+            $content->description('');
 
             $content->body($this->grid());
         });

@@ -14,4 +14,8 @@ class Order extends Model
   ,'img'
   ,'imgnum'
 );
+	  public function Role()
+	{
+		return $this->belongsTo(Role::class,'moka');
+	  }
 }
