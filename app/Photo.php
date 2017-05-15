@@ -16,4 +16,8 @@ class Photo extends Model
       ,'fee'
       ,'view'
       );
+	  public function moka()
+	  {
+		  return $this->belongsTo(Moka::class,'mokaid');
+	  }
 }

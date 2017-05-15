@@ -108,7 +108,7 @@ class CompanyController extends Controller
 				if($v==1){
 					return "<span style='color:green'>是</span>";
 				}
-			});
+			})->sortable();
             $grid->created_at();
             $grid->updated_at();
 			//禁用创建
@@ -129,7 +129,6 @@ class CompanyController extends Controller
 			 $filter->is('tel','手机号码');
 			// sql: ... WHERE `user.email` = $email;
 			 $filter->is('moka', '公司ID');
-			$filter->is('v','是否认证');//->options(['1'=>'通过认证','0'=>'未认证']);
 			});
         });
     }

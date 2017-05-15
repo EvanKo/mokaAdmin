@@ -22,7 +22,8 @@ use Encore\Admin\Widgets\Table;
 class HomeController extends Controller
 {
     public function index()
-    {
+	{
+		/*
         return Admin::content(function (Content $content) {
 
             $content->header('主页');
@@ -111,5 +112,5 @@ class HomeController extends Controller
 
 			$content->row((new Box('Table', new Table($headers, $rows)))->style('info')->solid());
         });
-	}
+	}*/
 }

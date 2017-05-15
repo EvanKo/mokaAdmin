@@ -41,7 +41,7 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
+            $content->header('摩卡编辑');
             $content->description('description');
 
             $content->body($this->form()->edit($id));
@@ -73,11 +73,13 @@ class MokaController extends Controller
     {
         return Admin::grid(Role::class, function (Grid $grid) {
 			//$grid->model()->where('id','=','2');
-            $grid->id('moka_ID')->sortable();
-			$grid->head()->image(50,50);
-			$grid->size();
-			$grid->imgnum();
-			$grid->imgrealnum();
+            $grid->id('作者id')->sortable();
+			$grid->mokaid('摩卡相册id')->sortable();
+			$grid->area('地区');
+			$grid->column('view','访问量');
+			$grid->photos('照片')->dispaly(function($photos){
+				return "<img style='width:100px height:100px'>$photos</img>";
+			});
             $grid->created_at();
             $grid->updated_at();
         });
@@ -94,7 +96,8 @@ class MokaController extends Controller
 
 			$form->display('id', 'ID');
 			$form->text('moka', 'moka')->tab('Basic Info',function($form){
-				$form->text('area','area');});
+				$form->text('area','area');
+			});
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
