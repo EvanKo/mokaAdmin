@@ -23,13 +23,13 @@ class HomeController extends Controller
 {
     public function index()
 	{
-		/*
+		
         return Admin::content(function (Content $content) {
 
             $content->header('主页');
             $content->description('Description...');
 
-            $content->row(function ($row) {
+   /*         $content->row(function ($row) {
                 $row->column(3, new InfoBox('New Users', 'users', 'aqua', '/admin/users', '1024'));
                 $row->column(3, new InfoBox('New Orders', 'shopping-cart', 'green', '/admin/orders', '150%'));
                 $row->column(3, new InfoBox('Articles', 'book', 'yellow', '/admin/articles', '2786'));
@@ -111,6 +111,6 @@ class HomeController extends Controller
             ];
 
 			$content->row((new Box('Table', new Table($headers, $rows)))->style('info')->solid());
-        });
-	}*/
+	});*/
+	}
 }
