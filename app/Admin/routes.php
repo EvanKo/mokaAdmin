@@ -19,4 +19,5 @@ Route::group([
 	$router->resource('user', UserController::class);
 	$router->resource('model', ModelController::class);
 	$router->resource('PayRecord', PayRecordController::class);
+	$router->resource('notice', NoticeController::class);
 });
