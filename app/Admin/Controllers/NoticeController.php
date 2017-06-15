@@ -100,7 +100,7 @@ class NoticeController extends Controller
 			$form->text('title','标题');
 			$form->textarea('content','内容');
 			$form->text('target','接受id');
-			$form->radio('是否群发')->options(['1'=>'是','0'=>'否']);
+			$form->radio('all','是否群发')->options(['1'=>'是','0'=>'否']);
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });

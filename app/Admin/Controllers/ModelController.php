@@ -76,7 +76,9 @@ class ModelController extends Controller
 
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
-			$grid->head('头像')->image(50,50);
+			$grid->head('头像')->display(function($head){
+				return "<img src=http://$head width=50 height=50 >";
+			});//image( 50);
 			$grid->tel('手机号码');
 			$grid->sex('性别');
 			/*$grid->role('角色')->display(function($role){
@@ -100,7 +102,11 @@ class ModelController extends Controller
 					return '至尊会员';
 				}
 			});
-			$grid->viptime('vip时间')->editable('date');
+			$grid->viptime('vip时间')->display(function($viptime){
+				if(!$viptime){
+					return '无';
+				}else return $viptime;
+			})->editable('date');
 			$grid->money('余额');
             $grid->created_at();
             $grid->updated_at();
@@ -109,9 +115,8 @@ class ModelController extends Controller
 			$grid->actions(function ($actions) {
 
 					$actions->row;
-					$actions->disableEdit();
 				    // append一个操作
-				   $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
+				 //  $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
 					//$actions->append("<video src='$url'>预览</video>");
 				             });
 
@@ -135,9 +140,11 @@ class ModelController extends Controller
         return Admin::form(Role::class, function (Form $form) {
 		$form->tab('基本信息',function($form){
 			$form->text('moka','id');
-			$form->image('head','头像');
+			$form->display('head','头像')->with(function($head){
+				return "<img src=http://$head width=50 height=50>";
+			});
 			$form->text('tel')->rules('max:11');
-			$form->radio('sex','性别')->options(['1'=>'男','2'=>'女'])->default('1');
+			$form->radio('sex','性别')->options(['1'=>'男','0'=>'女'])->default('1');
 			//$form->select('role','角色身份')
 			//->options(['1'=>'模特','2'=>'摄影师','3'=>'经纪人','4'=>'公司']);
 			$form->hidden('role','1');

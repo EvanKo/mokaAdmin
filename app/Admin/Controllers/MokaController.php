@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Role;
+use App\Moka;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -71,7 +71,7 @@ class MokaController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Role::class, function (Grid $grid) {
+        return Admin::grid(Moka::class, function (Grid $grid) {
 			//$grid->model()->where('id','=','2');
             $grid->id('作者id')->sortable();
 			$grid->mokaid('摩卡相册id')->sortable();
@@ -92,7 +92,7 @@ class MokaController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Role::class, function (Form $form) {
+        return Admin::form(Moka::class, function (Form $form) {
 
 			$form->display('id', 'ID');
 			$form->text('moka', 'moka')->tab('Basic Info',function($form){

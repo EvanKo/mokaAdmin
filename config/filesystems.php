@@ -49,7 +49,7 @@ return [
 		],
 		'admin' => [
             'driver' => 'local',
-            'root' => public_path('upload'),
+            'root' => app_path('moka_public'),
         ],
 
 
