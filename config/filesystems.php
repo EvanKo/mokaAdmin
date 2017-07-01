@@ -51,7 +51,18 @@ return [
             'driver' => 'local',
             'root' => app_path('moka_public'),
         ],
-
+	'qiniu' => [
+        'driver'  => 'qiniu',
+        'domains' => [
+            'default'   => 'http://os3h4gw7b.bkt.clouddn.com', //你的七牛域名
+            'https'     => '',         //你的HTTPS域名
+            'custom'    => '',                //你的自定义域名
+         ],
+        'access_key'=> 'RUTxOoX5K9jJiQtef7kk4w5_uRHBFKeCw6IfETaZ',  //AccessKey
+        'secret_key'=> '7z_zrCHM2dOlJ7W1upnUem6NjYrbQvhJcNmE0PJN',  //SecretKey
+        'bucket'    => 'bbtrainchapter',  //Bucket名字
+        'notify_url'=> '',  //持久化处理回调地址
+    ],
 
 
         'public' => [

@@ -15,6 +15,11 @@ class Moka extends Model
 	}
 	public function photos()
 	{
-		return $this->hasMany(Photo::class,'mokaid');
+		return $this->hasMany(Photo::class,'mokaid','mokaid');
 	}
+
+	public function getPhotos()
+	{
+	}
+		
 }

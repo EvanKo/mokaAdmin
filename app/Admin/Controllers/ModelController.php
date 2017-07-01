@@ -140,7 +140,7 @@ class ModelController extends Controller
         return Admin::form(Role::class, function (Form $form) {
 		$form->tab('基本信息',function($form){
 			$form->text('moka','id');
-			$form->display('head','头像')->with(function($head){
+			$form->display('head','头像')->setWidth(1,2)->with(function($head){
 				return "<img src=http://$head width=50 height=50>";
 			});
 			$form->text('tel')->rules('max:11');
@@ -152,17 +152,19 @@ class ModelController extends Controller
 			$form->text('province','省份');
 			$form->text('city','城市');
 			$form->text('area','区');
-			$form->password('password','密码')->rules('required');	
-			$form->password('password','确认密码')->rules('required|confirmed');	
 		})->tab('模特信息',function($form){
-			$form->text('figure.height')->placeholder('单位:kg');
-			$form->text('figure.weight')->placeholder('单位:cm');
-			$form->text('figure.bust');
-			$form->text('figure.waist');
-			$form->text('figure.hips');
-			$form->text('figure.shoe');
-			$form->text('figure.exp');
+			$form->text('figure.height','身高')->placeholder('单位:kg');
+			$form->text('figure.weight','体重')->placeholder('单位:cm');
+			$form->text('figure.bust','胸围');
+			$form->text('figure.waist','腰围');
+			$form->text('figure.hips','臀围');
+			$form->text('figure.shoe','鞋码');
+			$form->text('figure.exp','经历');
 		});
         });
     }
+
+	public function getArea($area)
+	{
+	}
 }

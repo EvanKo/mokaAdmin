@@ -20,4 +20,6 @@ Route::group([
 	$router->resource('model', ModelController::class);
 	$router->resource('PayRecord', PayRecordController::class);
 	$router->resource('notice', NoticeController::class);
+	$router->resource('photo', PhotosController::class);
+	$router->resource('album', AlbumController::class);
 });

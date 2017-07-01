@@ -46,14 +46,14 @@ return [
      */
     'upload'  => [
 
-        'disk' => 'admin',
+        'disk' => 'qiniu',
 
         'directory'  => [
             'image'  => 'image',
             'file'   => 'file',
         ],
 
-		'host'=>'http://',
+		'host'=>'http://os3h4gw7b.bkt.clouddn.com',
        // 'host' => 'http://bbt.rainchapter/upload/',
     ],
 

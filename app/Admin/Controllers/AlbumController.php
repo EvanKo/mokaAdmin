@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Moka;
+use App\Album;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class MokaController extends Controller
+class AlbumController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +24,8 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('摩卡');
-            $content->description('');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->grid());
         });
@@ -41,8 +41,8 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('摩卡编辑');
-            //$content->description('description');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,7 +57,7 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('headertest');
+            $content->header('header');
             $content->description('description');
 
             $content->body($this->form());
@@ -71,19 +71,12 @@ class MokaController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Moka::class, function (Grid $grid) {
-			//$grid->model()->where('id','=','2');
-            $grid->moka('作者id')->sortable();
-			$grid->mokaid('摩卡相册id')->sortable();
-			$grid->area('地区');
-			$grid->column('view','访问量');
-			$grid->photos('照片')->display(function($photos){
-				foreach($photos as $photo){
-					$data[] = $photo['img_s'];
-				}
-				return $data;
-					//return "<img style='width:100px height:100px'>$data</img>";
-				})->image('',100,100);
+        return Admin::grid(Album::class, function (Grid $grid) {
+
+            $grid->id('ID')->sortable();
+			$grid->moka('相册id');
+			$grid->img('封面')->image('',100,100);
+			$grid->albumname('相册名字');
             $grid->created_at();
             $grid->updated_at();
         });
@@ -96,12 +89,10 @@ class MokaController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Moka::class, function (Form $form) {
+        return Admin::form(Album::class, function (Form $form) {
 
-			$form->display('id', 'ID');
-			$form->text('moka', 'moka')->tab('Basic Info',function($form){
-				$form->text('area','area');
-			});
+            $form->display('id', 'ID');
+
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
