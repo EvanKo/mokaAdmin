@@ -62,7 +62,8 @@ return [
         'secret_key'=> '7z_zrCHM2dOlJ7W1upnUem6NjYrbQvhJcNmE0PJN',  //SecretKey
         'bucket'    => 'bbtrainchapter',  //Bucket名字
         'notify_url'=> '',  //持久化处理回调地址
-    ],
+        'access'    => 'public',
+        ],
 
 
         'public' => [

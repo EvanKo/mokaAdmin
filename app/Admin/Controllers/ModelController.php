@@ -140,9 +140,10 @@ class ModelController extends Controller
         return Admin::form(Role::class, function (Form $form) {
 		$form->tab('基本信息',function($form){
 			$form->text('moka','id');
-			$form->display('head','头像')->setWidth(1,2)->with(function($head){
+			$form->image('head','头像');
+			/*$form->display('head','头像')->setWidth(1,2)->with(function($head){
 				return "<img src=http://$head width=50 height=50>";
-			});
+			});*/
 			$form->text('tel')->rules('max:11');
 			$form->radio('sex','性别')->options(['1'=>'男','0'=>'女'])->default('1');
 			//$form->select('role','角色身份')

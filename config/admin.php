@@ -49,6 +49,7 @@ return [
         'disk' => 'qiniu',
 
         'directory'  => [
+            'head'  => 'head',
             'image'  => 'image',
             'file'   => 'file',
         ],

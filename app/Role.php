@@ -55,4 +55,14 @@ class Role extends Model
 	  {
 		  return $this->hasOne(Auths::class,'moka');
 	  }
+	  public static function boot()
+	{
+    	parent::boot();
+
+    	static::saving(function ($model) {
+
+        dd($model->head);
+
+   		});
+	}
 }

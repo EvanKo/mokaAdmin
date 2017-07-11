@@ -64,7 +64,7 @@ class MokaController extends Controller
         });
     }
 
-    /**
+    /*ti
      * Make a grid builder.
      *
      * @return Grid
@@ -78,10 +78,9 @@ class MokaController extends Controller
 			$grid->area('地区');
 			$grid->column('view','访问量');
 			$grid->photos('照片')->display(function($photos){
-				foreach($photos as $photo){
-					$data[] = $photo['img_s'];
-				}
-				return $data;
+				//$data = self::getPhotosArray($photos);
+                   
+				return json_encode($photos,true);
 					//return "<img style='width:100px height:100px'>$data</img>";
 				})->image('',100,100);
             $grid->created_at();
@@ -105,5 +104,13 @@ class MokaController extends Controller
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
+    }
+
+    private static function getPhotosArray($datas)
+    {
+        foreach($datas as $data){
+            $array[] = $data['img_s']; 
+        }
+        return json_encode($array,true);
     }
 }
