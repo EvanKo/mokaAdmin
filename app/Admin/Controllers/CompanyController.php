@@ -76,7 +76,9 @@ class CompanyController extends Controller
 
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
-			$grid->head('头像')->image(50,50);
+			$grid->head('头像')->display(function($head){
+				return "<img src=http://os3h4gw7b.bkt.clouddn.com/$head width=50 height=50 >";
+			});//image( 50);
 			$grid->tel('手机号码');
 		/*	$grid->role('角色')->display(function($role){
 				if($role=='1') return '模特';
@@ -84,9 +86,10 @@ class CompanyController extends Controller
 				if($role=='3') return '经纪人';
 				if($role=='4') return '公司';
 		});*/
-			$grid->provice('省份');
+			$grid->area('地区')->display(function($value){
+				return self::getProvince($value);
+			});
 			$grid->city('城市');
-			$grid->area('地区');
 			$grid->v('会员等级')->display(function($v){
 				switch($v){
 				case 0:
@@ -152,12 +155,10 @@ class CompanyController extends Controller
 			$form->text('name','昵称');
 			$form->text('province','省份');
 			$form->text('city','城市');
-			$form->text('area','区');
-			$form->password('password','密码')->rules('required');	
-			$form->password('password','确认密码')->rules('required|confirmed');	
+			
 		})->tab('认证信息',function($form){
-			$form->display('auths.moka','公司ID');
-			$form->display('auths.authentication_name','认证姓名');
+			$form->display('auths.moka','公司/工作室ID');
+			$form->display('auths.authentication_name','真实姓名');
 			$form->image('auths.authentication','认证机构');
 			$form->image('auths.identification','身份证照片');
 			$form->image('auths.identification_img','手持身份证照片');

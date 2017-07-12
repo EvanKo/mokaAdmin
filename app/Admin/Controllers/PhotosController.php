@@ -71,12 +71,18 @@ class PhotosController extends Controller
     protected function grid()
     {
         return Admin::grid(Photo::class, function (Grid $grid) {
-
-            $grid->id('ID')->sortable();
+            $grid->mokaid('摩卡相册序号')->sortable();
 			$grid->img_s('图片')->image('',120,120);
-			$grid->mokaid('moka相册序号');
+		    $grid->actions(function ($actions) {
+					$actions->disableEdit();
+			});
 			$grid->column('view','阅读量');//->sortable();
 			$grid->ps('备注');
+            $grid->filter(function($filter){
+			    // 禁用id查询框
+			    $filter->disableIdFilter();
+			    $filter->is('mokaid', '摩卡相册序号');
+            });
 			$grid->disableCreation();
             $grid->created_at();
             $grid->updated_at();

@@ -10,6 +10,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use DB;
 
 class MokaController extends Controller
 {
@@ -24,7 +25,7 @@ class MokaController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('摩卡');
+            $content->header('摩卡相册');
             $content->description('');
 
             $content->body($this->grid());
@@ -73,16 +74,28 @@ class MokaController extends Controller
     {
         return Admin::grid(Moka::class, function (Grid $grid) {
 			//$grid->model()->where('id','=','2');
-            $grid->moka('作者id')->sortable();
-			$grid->mokaid('摩卡相册id')->sortable();
-			$grid->area('地区');
+            $grid->column('moka','作者')->display(function($value){
+                $name = DB::table("Roles")->where('moka','=',$value)->select(['name','moka'])->first();
+                if(!$name){
+                    return '无';
+                }
+                return "<a href='model?moka=$name->moka'>$name->name</a>";
+            });
+			$grid->mokaid('摩卡相册id')->display(function($value){
+                return "<a href='photo?mokaid=$value'>$value</a>";
+            });
+            
+			$grid->area('地区')->display(function($value){
+                    return self::getProvince($value);
+                });
+            $grid->imgnum('照片数量');
 			$grid->column('view','访问量');
-			$grid->photos('照片')->display(function($photos){
-				//$data = self::getPhotosArray($photos);
+			// $grid->photos('照片')->display(function($photos){
+			// 	//$data = self::getPhotosArray($photos);
                    
-				return json_encode($photos,true);
-					//return "<img style='width:100px height:100px'>$data</img>";
-				})->image('',100,100);
+			// 	return json_encode($photos,true);
+			// 		//return "<img style='width:100px height:100px'>$data</img>";
+			// 	})->image('',100,100);
             $grid->created_at();
             $grid->updated_at();
         });
@@ -99,11 +112,19 @@ class MokaController extends Controller
 
 			$form->display('id', 'ID');
 			$form->text('moka', 'moka')->tab('Basic Info',function($form){
-				$form->text('area','area');
+				$form->text('area','地区')->display(function($value){
+                    return self::getProvince($value);
+                });
 			});
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });
+    }
+
+    private static function getProvince($number)
+    {
+        $province = DB::table('Area')->where(['parent_id'=>'0','sort'=>$number])->first();
+        return $province->name;
     }
 
     private static function getPhotosArray($datas)

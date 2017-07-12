@@ -10,8 +10,9 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use DB;
 
-class ManagerController extends Controller
+class UndefineUserController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +25,8 @@ class ManagerController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('经纪人');
-            $content->description('');
+            $content->header('未知用户');
+            $content->description('已注册，但未选择用户角色');
 
             $content->body($this->grid());
         });
@@ -57,7 +58,7 @@ class ManagerController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('新建经纪人');
+            $content->header('新建模特');
             $content->description('');
 
             $content->body($this->form());
@@ -72,10 +73,11 @@ class ManagerController extends Controller
     protected function grid()
     {
         return Admin::grid(Role::class, function (Grid $grid) {
-			$grid->model()->where('role','=','3');
+			$grid->model()->where('role','=','0')->orWhereNull('role');
 
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
+			$grid->name('名称');
 			$grid->head('头像')->display(function($head){
 				return "<img src=http://os3h4gw7b.bkt.clouddn.com/$head width=50 height=50 >";
 			});//image( 50);
@@ -89,16 +91,12 @@ class ManagerController extends Controller
 					return '未知';
 				}
 			});
-		/*	$grid->role('角色')->display(function($role){
-				if($role=='1') return '模特';
-				if($role=='2') return '摄影师';
-				if($role=='3') return '经纪人';
-				if($role=='4') return '公司';
-		});*/
+			
 			$grid->area('地区')->display(function($value){
 				return self::getProvince($value);
 			});
 			$grid->city('城市');
+			
 			$grid->v('会员等级')->display(function($v){
 				switch($v){
 				case 0:
@@ -111,7 +109,11 @@ class ManagerController extends Controller
 					return '至尊会员';
 				}
 			});
-			$grid->viptime('vip时间')->editable('date');
+			$grid->viptime('vip时间')->display(function($viptime){
+				if(!$viptime){
+					return '无';
+				}else return $viptime;
+			})->editable('date');
 			$grid->money('余额');
             $grid->created_at();
             $grid->updated_at();
@@ -120,7 +122,6 @@ class ManagerController extends Controller
 			$grid->actions(function ($actions) {
 
 					$actions->row;
-					$actions->disableEdit();
 				    // append一个操作
 				 //  $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
 					//$actions->append("<video src='$url'>预览</video>");
@@ -147,26 +148,34 @@ class ManagerController extends Controller
 		$form->tab('基本信息',function($form){
 			$form->text('moka','id');
 			$form->image('head','头像');
+			/*$form->display('head','头像')->setWidth(1,2)->with(function($head){
+				return "<img src=http://$head width=50 height=50>";
+			});*/
 			$form->text('tel')->rules('max:11');
-			$form->radio('sex','性别')->options(['1'=>'男','2'=>'女'])->default('1');
+			$form->radio('sex','性别')->options(['1'=>'男','0'=>'女'])->default('1');
 			//$form->select('role','角色身份')
 			//->options(['1'=>'模特','2'=>'摄影师','3'=>'经纪人','4'=>'公司']);
 			$form->hidden('role','1');
 			$form->text('name','昵称');
 			$form->text('province','省份');
 			$form->text('city','城市');
-			
-			$form->password('password','密码')->rules('required');	
-			$form->password('password','确认密码')->rules('required|confirmed');	
+			$form->text('area','区');
 		})->tab('模特信息',function($form){
-			$form->text('figure.height')->placeholder('单位:kg');
-			$form->text('figure.weight')->placeholder('单位:cm');
-			$form->text('figure.bust');
-			$form->text('figure.waist');
-			$form->text('figure.hips');
-			$form->text('figure.shoe');
-			$form->text('figure.exp');
+			$form->text('figure.height','身高')->placeholder('单位:kg');
+			$form->text('figure.weight','体重')->placeholder('单位:cm');
+			$form->text('figure.bust','胸围');
+			$form->text('figure.waist','腰围');
+			$form->text('figure.hips','臀围');
+			$form->text('figure.shoe','鞋码');
+			$form->text('figure.exp','经历');
 		});
         });
     }
+
+	private static function getProvince($number)
+    {
+        $province = DB::table('Area')->where(['parent_id'=>'0','sort'=>$number])->first();
+        return $province->name;
+    }
+	
 }

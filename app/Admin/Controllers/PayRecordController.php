@@ -11,6 +11,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use DB;
 
 class PayRecordController extends Controller
 {
@@ -76,8 +77,30 @@ class PayRecordController extends Controller
 			$grid->model()->where('type','<=','3');
 
             $grid->id('ID');
-			$grid->moka('mokaID')->sortable();
-			$grid->name('名字');
+			 $grid->column('moka','作者')->display(function($value){
+                $name = DB::table("Roles")->where('moka','=',$value)->select(['name','moka','role'])->first();
+                if(!$name){
+                    return '未知';
+                }
+                switch ($name->role){
+                    case 1:
+                        return "<a href='model?moka=$name->moka'>$name->name</a>";
+                        break;
+                    case 2:
+                        return "<a href='photographer?moka=$name->moka'>$name->name</a>";
+                        break;
+                    case 3:
+                        return "<a href='manager?moka=$name->moka'>$name->name</a>";
+                        break;
+                    case 4:
+                        return "<a href='company?moka=$name->moka'>$name->name</a>";
+                        break;
+                    default:
+                        return "<a href='undefineUser?moka=$name->moka'>$name->name</a>";
+                        break;
+                }
+            });
+			//$grid->name('名字');
 			$grid->openid('微信标识');
 			$grid->tel('手机');
 			$grid->type('类型')->display(function($type){
@@ -105,9 +128,9 @@ class PayRecordController extends Controller
 				$filter->disableIdFilter();
 
 			    });
-			$grid->actions(function ($actions) {
-				$actions->disableEdit();
-			});
+			// $grid->actions(function ($actions) {
+			// 	$actions->disableEdit();
+			// });
 			$grid->disableCreation();
             $grid->created_at();
             $grid->updated_at();
@@ -123,16 +146,14 @@ class PayRecordController extends Controller
     {
         return Admin::form(PayRecord::class, function (Form $form) {
 
-					$form->undisplay('id', 'ID');
-		$form->tab('基本信息', function ($form) {
-	    	$form->text('moka','id');
-		    $form->text('openid');
-		    $form->text('name','名字');
-		    $form->text('tel','手机');
-		    $form->select('type','类型')->options(['1'=>'普通会员','2'=>'高级会员','3'=>'至尊会员']);
-		    $form->text('amount');
-		    $form->text('status');
-		});     
+		$form->undisplay('id', 'ID');
+        $form->display('moka','id');
+        $form->display('name','名字');
+        $form->text('tel','手机');
+        $form->select('type','类型')->options(['1'=>'普通会员','2'=>'高级会员','3'=>'至尊会员']);
+     
+        $form->currency('amount','金额')->symbol('￥');
+		$form->number('time','月份数');
 	 		$form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');
         });

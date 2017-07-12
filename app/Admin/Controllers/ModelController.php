@@ -10,6 +10,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use DB;
 
 class ModelController extends Controller
 {
@@ -76,20 +77,31 @@ class ModelController extends Controller
 
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
+			$grid->name('名称');
 			$grid->head('头像')->display(function($head){
-				return "<img src=http://$head width=50 height=50 >";
+				return "<img src=http://os3h4gw7b.bkt.clouddn.com/$head width=50 height=50 >";
 			});//image( 50);
 			$grid->tel('手机号码');
-			$grid->sex('性别');
+			$grid->sex('性别')->display(function($value){
+				if($value==1){
+					return '男';
+				}else if($value==0){
+					return '女';
+				}else{
+					return '未知';
+				}
+			});
 			/*$grid->role('角色')->display(function($role){
 				if($role=='1') return '模特';
 				if($role=='2') return '摄影师';
 				if($role=='3') return '经纪人';
 				if($role=='4') return '公司';
 			});*/
-			$grid->provice('省份');
+			$grid->area('地区')->display(function($value){
+				return self::getProvince($value);
+			});
 			$grid->city('城市');
-			$grid->area('地区');
+			
 			$grid->v('会员等级')->display(function($v){
 				switch($v){
 				case 0:
@@ -152,7 +164,7 @@ class ModelController extends Controller
 			$form->text('name','昵称');
 			$form->text('province','省份');
 			$form->text('city','城市');
-			$form->text('area','区');
+			
 		})->tab('模特信息',function($form){
 			$form->text('figure.height','身高')->placeholder('单位:kg');
 			$form->text('figure.weight','体重')->placeholder('单位:cm');
@@ -165,7 +177,9 @@ class ModelController extends Controller
         });
     }
 
-	public function getArea($area)
-	{
-	}
+	private static function getProvince($number)
+    {
+        $province = DB::table('Area')->where(['parent_id'=>'0','sort'=>$number])->first();
+        return $province->name;
+    }
 }

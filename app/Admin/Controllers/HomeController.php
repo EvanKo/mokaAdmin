@@ -18,6 +18,7 @@ use Encore\Admin\Widgets\Collapse;
 use Encore\Admin\Widgets\InfoBox;
 use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Widgets\Table;
+use DB;
 
 class HomeController extends Controller
 {
@@ -29,13 +30,15 @@ class HomeController extends Controller
             $content->header('主页');
             $content->description('Description...');
 
-   /*         $content->row(function ($row) {
-                $row->column(3, new InfoBox('New Users', 'users', 'aqua', '/admin/users', '1024'));
-                $row->column(3, new InfoBox('New Orders', 'shopping-cart', 'green', '/admin/orders', '150%'));
-                $row->column(3, new InfoBox('Articles', 'book', 'yellow', '/admin/articles', '2786'));
-                $row->column(3, new InfoBox('Documents', 'file', 'red', '/admin/files', '698726'));
+            $content->row(function ($row) {
+                $num1 = self::getNewUserNum();
+                $num2 = self::getNewOrderNum();
+                $row->column(3, new InfoBox('今日新用户数', 'users', 'aqua', '/admin/model', $num1));
+                $row->column(3, new InfoBox('今日新充值订单', 'shopping-cart', 'green', '/admin/PayRecord', $num2));
+                //$row->column(3, new InfoBox('Articles', 'book', 'yellow', '/admin/articles', '2786'));
+                //$row->column(3, new InfoBox('Documents', 'file', 'red', '/admin/files', '698726'));
             });
-
+/*
             $content->row(function (Row $row) {
 
                 $row->column(6, function (Column $column) {
@@ -113,4 +116,22 @@ class HomeController extends Controller
 			$content->row((new Box('Table', new Table($headers, $rows)))->style('info')->solid());*/
 	});
 	}
+
+    private function getNewUserNum()
+    {
+        $d = strtotime('today');
+        $first = date('Y-m-d H:i:s',$d);
+        $now = date('Y-m-d H:i:s');
+        $num = DB::table('Roles')->whereBetween('created_at',[$first,$now])->get()->count();
+        return $num;
+    }
+
+    private function getNewOrderNum()
+    {
+        $d = strtotime('today');
+        $first = date('Y-m-d H:i:s',$d);
+        $now = date('Y-m-d H:i:s');
+        $num = DB::table('PayRecords')->whereBetween('created_at',[$first,$now])->get()->count();
+        return $num;
+    }
 }

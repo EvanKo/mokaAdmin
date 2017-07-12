@@ -22,4 +22,6 @@ Route::group([
 	$router->resource('notice', NoticeController::class);
 	$router->resource('photo', PhotosController::class);
 	$router->resource('album', AlbumController::class);
+	$router->resource('undefineUser', UndefineUserController::class);
+	$router->resource('order', OrderController::class);
 });

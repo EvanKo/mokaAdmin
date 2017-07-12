@@ -76,18 +76,29 @@ class PhotogragherController extends Controller
 
             $grid->id('ID');
 			$grid->moka('账户')->sortable();
-			$grid->head('头像')->image(50,50);
+			$grid->head('头像')->display(function($head){
+				return "<img src=http://os3h4gw7b.bkt.clouddn.com/$head width=50 height=50 >";
+			});//image( 50);
 			$grid->tel('手机号码');
-			$grid->sex('性别');
+			$grid->sex('性别')->display(function($value){
+				if($value==1){
+					return '男';
+				}else if($value==0){
+					return '女';
+				}else{
+					return '未知';
+				}
+			});
 		/*	$grid->role('角色')->display(function($role){
 				if($role=='1') return '模特';
 				if($role=='2') return '摄影师';
 				if($role=='3') return '经纪人';
 				if($role=='4') return '公司';
 		});*/
-			$grid->provice('省份');
+			$grid->area('地区')->display(function($value){
+				return self::getProvince($value);
+			});
 			$grid->city('城市');
-			$grid->area('地区');
 			$grid->v('会员等级')->display(function($v){
 				switch($v){
 				case 0:
@@ -107,13 +118,8 @@ class PhotogragherController extends Controller
 			//禁用创建
 			//$grid->disableCreation();
 			$grid->actions(function ($actions) {
-
-					$actions->row;
 					$actions->disableEdit();
-				    // append一个操作
-				   $actions->append('<a href=""><i class="fa fa-eye"></i></a>');
-					//$actions->append("<video src='$url'>预览</video>");
-				             });
+			});
 
 			$grid->filter(function($filter){
 
@@ -145,18 +151,9 @@ class PhotogragherController extends Controller
 			$form->text('province','省份');
 			$form->text('city','城市');
 			$form->text('area','区');
-			$form->password('password','密码')->rules('required');	
-			$form->password('password','确认密码')->rules('required|confirmed');	
+			// $form->password('password','密码')->rules('required');	
+			// $form->password('password','确认密码')->rules('required|confirmed');	
 		});
-		/*->tab('模特信息',function($form){
-			$form->text('figure.height')->placeholder('单位:kg');
-			$form->text('figure.weight')->placeholder('单位:cm');
-			$form->text('figure.bust');
-			$form->text('figure.waist');
-			$form->text('figure.hips');
-			$form->text('figure.shoe');
-			$form->text('figure.exp');
-		});*/
-        });
-    }
+    	});
+	}
 }
