@@ -24,4 +24,5 @@ Route::group([
 	$router->resource('album', AlbumController::class);
 	$router->resource('undefineUser', UndefineUserController::class);
 	$router->resource('order', OrderController::class);
+	$router->resource('moments', MomentController::class);
 });
