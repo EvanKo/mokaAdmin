@@ -18,8 +18,20 @@ class Moka extends Model
 		return $this->hasMany(Photo::class,'mokaid','mokaid');
 	}
 
-	public function getPhotos()
-	{
-	}
+	//删除时，同时删表Records的关联数据
+	  public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($model) {
+            $id = $model->id;Log::info('model moment`s id:'.$id);
+			      $query = DB::table('Records')->where(['target'=>3,'target_id'=>$id])->first(); 	 	
+			      if($query){
+				      DB::table('Records')->where(['target'=>3,'target_id'=>$id])->delete();
+			      }else{
+				      return ;
+		      	}
+        });
+    }
 		
 }
