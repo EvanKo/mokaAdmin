@@ -117,7 +117,7 @@ class PayRecordController extends Controller
 					return '未知';
 				}
 			});
-			$grid->time('购买时长/天');
+			$grid->time('购买时长/月');
 			$grid->amount('金额');
 			$grid->status('状态')->display(function($status){
 				return $status?'已支付':'未支付';
