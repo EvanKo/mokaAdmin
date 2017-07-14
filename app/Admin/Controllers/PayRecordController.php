@@ -43,8 +43,8 @@ class PayRecordController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('编辑订单');
+            //$content->description('description');
 
             $content->body($this->form()->edit($id));
         });
